@@ -1,0 +1,163 @@
+@startuml classes
+
+skinparam classAttributeIconSize 0
+
+
+
+class Aluno {
+    idAluno
+    nome
+    cpf
+    email
+    telefone
+    endereco
+    rfid
+    status
+
+    contratarPlano()
+    agendarAula()
+    cancelarAgendamento()
+    atualizarStatus()
+    registrarAcesso()
+    receberNotificacao()
+}
+
+class Plano {
+    idPlano
+    nome
+    tipo
+    valor
+    ativo
+
+    ativar()
+    desativar()
+    alterarValor()
+}
+
+class Pagamento {
+    idPagamento
+    data
+    valor
+    formaPagamento
+    status
+
+    realizarPagamento()
+    confirmarPagamento()
+    cancelarPagamento()
+    atualizarStatus()
+}
+
+class Acesso {
+    idAcesso
+    dataHora
+    autorizado
+
+    registrarAcesso()
+    liberarAcesso()
+    negarAcesso()
+}
+
+class Aula {
+    idAula
+    nome
+    horario
+    capacidadeMaxima
+
+    reservarVaga()
+    registrarVaga()
+    marcarPresenca()
+
+}
+
+class Agendamento {
+    idAgendamento
+    dataReserva
+    status
+
+    agendarAula()
+    alterarStatus()
+}
+
+class Presenca {
+    idPresenca
+    data
+    presente
+
+    marcarPresenca()
+    confirmarPresenca()
+}
+
+class AvaliacaoFisica {
+    idAvaliacao
+    data
+    peso
+    imc
+    percentualGordura
+    observacoes
+    anexo
+
+    iniciarAvaliacaoFisica()
+    enviarNotificacao()
+    anexarArquivo()
+}
+
+class Notificacao {
+    idNotificacao
+    tipo
+    dataEnvio
+    status
+    mensagem
+
+    gerarNotificacao()
+    marcarComoLida()
+}
+
+
+abstract class Funcionario {
+
+}
+
+class Instrutor {
+    idInstrutor
+    nome
+    especialidade
+
+    iniciarAula()
+}
+
+class Recepcionista {
+    idRecepcionista
+    nome
+
+    cadastrarAluno()
+    registrarPagamento()
+}
+
+class Gerente {
+    idGerente
+    nome
+
+    gerenciarPlanos()
+    gerarRelatorios()
+}
+
+Funcionario <|-- Instrutor
+Funcionario <|-- Recepcionista
+Funcionario <|-- Gerente
+
+Aluno "0..*" -- "1" Plano: escolhe
+Aluno "1*" -- "0..*" Pagamento: realiza
+Aluno "1" -- "0..*" Acesso: gera
+Aluno "1" -- "0..*" Agendamento: realiza
+Aluno "1" -- "0..*" Presenca: possui
+Aluno "1" -- "0..*" AvaliacaoFisica: possui
+Aluno "1" -- "0..*" Notificacao: recebe
+
+Aula "1" -- "0..*" Agendamento: possui
+Aula "1" -- "0..*" Presenca: registra
+
+Instrutor "1" -- "0..*" Aula: ministra
+Instrutor "1" -- "0..*" AvaliacaoFisica: realiza
+Instrutor "1" -- "0..*" Presenca: registra
+
+@enduml
